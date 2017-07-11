@@ -1,4 +1,4 @@
-# Should I Knock My House Down
+# Housing Price Predictor
 Work in progress - Finished on July 20, 2017
 
 # What it does

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>Quadratic Equation Solver</title>
+  <meta name="description" content="Quadratic Equation Solver">
+  <meta name="author" content="Galvanize DSI">
+
+    <script type="text/javascript"
+            src="{{ url_for('static', filename='jquery.js') }}">  
+    </script>
+    <script type="text/javascript" 
+            src="{{ url_for('static', filename='app.js') }}">  
+    </script>
+    <link rel="stylesheet" type="text/css" 
+          href="{{ url_for('static', filename='css/bootstrap.css') }}">
+
+</head>
+
+<body>
+<div class="container">
+
+    <h1>The DSI Quadratic Equation Solver</h1>
+
+    <div class="row">
+        <p>This app will solve quadratic equations for you!</p>
+        <p>Please enter the coefficients below!</p>
+    </div>
+
+    <div class="row">
+      <div class="form-inline">
+
+        <div class="form-group">
+          <p class="form-control-static">a:</p>
+        </div>
+        <div class="form-group">
+          <input class="form-control" id="a"></input>
+        </div>
+
+        <div class="form-group">
+          <p class="form-control-static">b:</p>
+        </div>
+        <div class="form-group">
+          <input class="form-control" id="b"></input>
+        </div>
+
+        <div class="form-group">
+          <p class="form-control-static">c:</p>
+        </div>
+        <div class="form-group">
+          <input class="form-control" id="c"></input>
+        </div>
+
+        <div class="form-group">
+          <button type="button" id="solve" class="btn-primary">Solve!</button>
+        </div>
+        
+      </div>
+    </div>
+
+    <div class="row">
+        <!-- The span has an id so that later we can fill in the solution
+             using js. -->
+        <p> The solution is: <span id="solution"></span> </p>
+    </div>
+
+</div>
+</body>
+</html>

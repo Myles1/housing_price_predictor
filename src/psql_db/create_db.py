@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 from sqlalchemy import create_engine
 
 PSQL_USER = 'MHollowed'
@@ -13,7 +14,7 @@ def pandas_engine():
 
 def create_table(df, table_name):
     '''Dumps pandas df to psql table'''
-    df.to_sql(table_name, pandas_engine())
+    df.to_sql(table_name, pandas_engine(), if_exists='append')
 
 if __name__ == '__main__':
     '''Create a psql table from csv data file'''
@@ -21,12 +22,35 @@ if __name__ == '__main__':
     # table_name = 'property_info'
     # file_path = 'data/csvs/EXTR_ResBldg.csv'
 
-    table_name = 'sales_info'
-    file_path = 'data/csvs/EXTR_RPSale.csv'
+    # table_name = 'sales_info'
+    # file_path = 'data/csvs/EXTR_RPSale.csv'
+
+    table_name = 'appraisal_history'
+    #file_path = 'data/csvs/EXTR_RealPropApplHist_V.csv'
+    file_path = 'data/csvs/temp2.csv'
+
+    dtypes = {
+        'Major' : str,
+        'Minor' : str,
+        'RollYr' : np.int32,
+        'RevalOrMaint' : str,
+        'LandVal' : np.int32,
+        'ImpsVal' : np.int32,
+        'NewDollars' : np.int32,
+        'SelectMethod' : np.int32,
+        'SelectReason' : np.int32,
+        'SelectAppr' : str,
+        'SelectDate' : np.datetime64,
+        'PostStatus' : np.int32,
+        'PostDate' : np.datetime64,
+        'UpdatedBy' : str,
+        'UpdateDate' : np.datetime64
+    }
+
 
     print("Reading {} into dataframe...".format(file_path))
-    df = pd.read_csv(file_path, low_memory=False)
-    df.replace(r'\s+', 0, regex=True, inplace=True)
+    df = pd.read_csv(file_path, low_memory=False, names=dtypes.keys())
+    #df.replace(r'\s+', 0, regex=True, inplace=True)
 
 
 

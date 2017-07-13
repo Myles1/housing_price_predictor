@@ -72,7 +72,7 @@ if __name__ == '__main__':
     print("Connecting to Database...")
     print("Database: {}".format(db_info['database']))
     print("User: {}".format(db_info['user']))
-    print("Host: {}".format(db_info['localhost']))
+    print("Host: {}".format(db_info['host']))
     print("Port: {}".format(db_info['port']))
     conn = psycopg2.connect(**db_info)
     cur = conn.cursor()

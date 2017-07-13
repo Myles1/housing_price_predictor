@@ -55,6 +55,9 @@ class RealEstatePredictor(object):
         y_hat = self.model.predict(X_test)
         return median_absolute_error(y_hat, y_test)
 
+    def predict(self, X):
+        return self.model.predict(X)
+
 
 
 

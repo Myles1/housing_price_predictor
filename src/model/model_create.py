@@ -6,29 +6,25 @@ import numpy as np
 
 # DataFrames
 import pandas as pd
-pd.set_option('display.max_columns', 500)
-
-# Plotting
-import matplotlib.pyplot as plt
 
 # Models
 from xgboost import XGBRegressor
-from sklearn.linear_model import LinearRegression
-from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor
+# from sklearn.linear_model import LinearRegression
+# from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor
 
 # Cross validation
-from sklearn.cross_validation import train_test_split, cross_val_score
-from sklearn.ensemble.partial_dependence import plot_partial_dependence
-from sklearn.model_selection import KFold, ShuffleSplit
-from sklearn.metrics import mean_squared_error, mean_absolute_error, median_absolute_error, make_scorer
-mae_scorer = make_scorer(median_absolute_error)
+# from sklearn.cross_validation import train_test_split, cross_val_score
+# from sklearn.ensemble.partial_dependence import plot_partial_dependence
+# from sklearn.model_selection import KFold, ShuffleSplit
+# from sklearn.metrics import mean_squared_error, mean_absolute_error, median_absolute_error, make_scorer
+# make_scorer = make_scorer(median_absolute_error)
 
 # Preprocessing
 from sklearn.preprocessing import StandardScaler
 from sklearn.utils import shuffle
 
 # Persisting Model
-import cPickle as pickle
+import pickle
 
 
 def execute_query(q):

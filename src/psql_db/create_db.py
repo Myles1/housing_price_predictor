@@ -25,9 +25,11 @@ if __name__ == '__main__':
     # table_name = 'sales_info'
     # file_path = 'data/csvs/EXTR_RPSale.csv'
 
-    table_name = 'appraisal_history'
+    table_name = 'appraisal_history2'
     #file_path = 'data/csvs/EXTR_RealPropApplHist_V.csv'
-    file_path = 'data/csvs/temp2.csv'
+
+    file_path = 'data/csvs/temp.csv'
+    file_path2 = 'data/csvs/temp2.csv'
 
     dtypes = {
         'Major' : str,
@@ -48,12 +50,12 @@ if __name__ == '__main__':
     }
 
 
-    print("Reading {} into dataframe...".format(file_path))
-    df = pd.read_csv(file_path, low_memory=False, names=dtypes.keys())
-    #df.replace(r'\s+', 0, regex=True, inplace=True)
+    for path_ in [file_path, file_path2]:
+        print("Reading {} into dataframe...".format(file_path))
+        df = pd.read_csv(file_path, low_memory=False, names=dtypes.keys())
 
+        print("Replacing key values...")
+        df.replace(r'\s+', 0, regex=True, inplace=True)
 
-
-
-    print("Creating {} table...".format(table_name))
-    create_table(df, table_name)
+        print("Creating {} table...".format(table_name))
+        create_table(df, table_name)

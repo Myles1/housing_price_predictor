@@ -13,7 +13,7 @@ from xgboost import XGBRegressor
 from sklearn.ensemble import RandomForestRegressor#, GradientBoostingRegressor
 
 # Cross validation
-# from sklearn.cross_validation import train_test_split, cross_val_score
+from sklearn.cross_validation import train_test_split#, cross_val_score
 # from sklearn.ensemble.partial_dependence import plot_partial_dependence
 # from sklearn.model_selection import KFold, ShuffleSplit
 # from sklearn.metrics import mean_squared_error, mean_absolute_error, median_absolute_error, make_scorer
@@ -43,9 +43,16 @@ class RealEstatePredictor(object):
     def __init__(self):
         self.model_XG = XGBRegressor(learning_rate=0.1, n_estimators=500, max_depth=15)
         self.model_RF = RandomForestRegressor(n_jobs=-1, n_estimators=250)
+        self.ensemble = None
+
     def fit(self, X, y):
+        X_train, X_test, y_train, y_test = train_test_split(X, y)
+
         self.model_XG.fit(X, y)
         self.model_RF.fit(X, y)
+
+        self.ensemble = [self.model_XG, self.model_RF]
+
         return self
 
     def score(self, X_test, y_test):
@@ -59,6 +66,10 @@ class RealEstatePredictor(object):
         return median_absolute_error(y_hat, y_test)
 
     def predict(self, X):
+
+
+
+
         return self.model.predict(X)
 
 

@@ -10,7 +10,7 @@ import pandas as pd
 # Models
 from xgboost import XGBRegressor
 # from sklearn.linear_model import LinearRegression
-# from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor
+from sklearn.ensemble import RandomForestRegressor#, GradientBoostingRegressor
 
 # Cross validation
 # from sklearn.cross_validation import train_test_split, cross_val_score
@@ -41,14 +41,21 @@ def filter_df(keep_values, col_name, df):
 class RealEstatePredictor(object):
 
     def __init__(self):
-        self.model = XGBRegressor(learning_rate=0.1, n_estimators=500, max_depth=15)
-
+        self.model_XG = XGBRegressor(learning_rate=0.1, n_estimators=500, max_depth=15)
+        self.model_RF = RandomForestRegressor(n_jobs=-1, n_estimators=250)
     def fit(self, X, y):
-        self.model.fit(X, y)
+        self.model_XG.fit(X, y)
+        self.model_RF.fit(X, y)
         return self
 
     def score(self, X_test, y_test):
-        y_hat = self.model.predict(X_test)
+        y_hat_XG = self.model_XG.predict(X_test)
+        y_hat_RF = self.model_RF.predict(X_test)
+
+        X_preds = [y_hat_XG, y_hat_RF]
+        ensemble = XGBRegressor(learning_rate=0.1, n_estimators=500, max_depth=15)
+        ensemble.fit(X_preds)
+
         return median_absolute_error(y_hat, y_test)
 
     def predict(self, X):

@@ -14,7 +14,7 @@ def pandas_engine():
 
 def create_table(df, table_name):
     '''Dumps pandas df to psql table'''
-    df.to_sql(table_name, pandas_engine(), if_exists='append')
+    df.to_sql(table_name, pandas_engine(), if_exists='replace')
 
 if __name__ == '__main__':
     '''Create a psql table from csv data file'''
@@ -25,12 +25,23 @@ if __name__ == '__main__':
     # table_name = 'sales_info'
     # file_path = 'data/csvs/EXTR_RPSale.csv'
 
-    table_name = 'appraisal_history2'
+    # table_name = 'appraisal_history2'
     #file_path = 'data/csvs/EXTR_RealPropApplHist_V.csv'
 
-    file_path = 'data/csvs/temp.csv'
-    file_path2 = 'data/csvs/temp2.csv'
 
+
+    # file_path = 'data/csvs/temp.csv'
+    # file_path2 = 'data/csvs/temp2.csv'
+
+    table_name = 'unit_breakdown'
+    file_path = 'data/csvs/EXTR_UnitBreakdown.csv'
+    
+    # table_name = 'parcel_record'
+    # file_path = 'data/csvs/EXTR_Parcel.csv'
+
+
+
+    file_paths = [file_path]
     dtypes = {
         'Major' : str,
         'Minor' : str,
@@ -50,9 +61,11 @@ if __name__ == '__main__':
     }
 
 
-    for path_ in [file_path, file_path2]:
+    for path_ in file_paths:
         print("Reading {} into dataframe...".format(file_path))
-        df = pd.read_csv(file_path, low_memory=False, names=dtypes.keys())
+        df = pd.read_csv(file_path, low_memory=False, encoding='cp1252')#, names=dtypes.keys())
+
+
 
         print("Replacing key values...")
         df.replace(r'\s+', 0, regex=True, inplace=True)

@@ -1,3 +1,4 @@
 # Data Files
 *.pkl
 data/*
+*ipynb_checkpoints

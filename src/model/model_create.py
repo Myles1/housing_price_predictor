@@ -42,51 +42,38 @@ class RealEstatePredictor(object):
 
     def __init__(self):
         self.model_XG = XGBRegressor(learning_rate=0.1, n_estimators=500, max_depth=15)
-        self.model_RF = RandomForestRegressor(n_jobs=-1, n_estimators=250)
-        self.ensemble = None
 
     def fit(self, X, y):
-        X_train, X_test, y_train, y_test = train_test_split(X, y)
-
-        self.model_XG.fit(X, y)
-        self.model_RF.fit(X, y)
-
-        self.ensemble = [self.model_XG, self.model_RF]
-
+        self.model.fit(X, y)
         return self
 
     def score(self, X_test, y_test):
-        y_hat_XG = self.model_XG.predict(X_test)
-        y_hat_RF = self.model_RF.predict(X_test)
-
-        X_preds = [y_hat_XG, y_hat_RF]
-        ensemble = XGBRegressor(learning_rate=0.1, n_estimators=500, max_depth=15)
-        ensemble.fit(X_preds)
-
+        y_hat = self.model.predict(X_test)
         return median_absolute_error(y_hat, y_test)
 
     def predict(self, X):
-
-
-
-
-        return self.model.predict(X)
-
-
-
+        return self.model_XG.predict(X)
 
 
 if __name__ == '__main__':
     '''Steps to create and persist Real Estate Predictor'''
 
-
     db_info = {
         'user':'app_connect',
-        'database':'real_estate_data',
+        'database':'final_real_estate_data',
         'host' : 'localhost',
         'port' : 5432,
         'password' : 'flying_horse536'
     }
+
+
+    db_info = {
+        'user':'app_connect',
+        'host':'localhost',
+        'database':'real_estate_data',
+        'port':5432
+    }
+
     print("Connecting to Database...")
     print("Database: {}".format(db_info['database']))
     print("User: {}".format(db_info['user']))
@@ -131,15 +118,17 @@ if __name__ == '__main__':
     property_type_keep_values = [1, 2, 3]
     df = filter_df(property_type_keep_values, 'property_type', df)
 
+
     '''
-    SaleInstrument value of 3 represents a Statutory Warranty Deed
+    SaleInstrument value of 3 representa a Statutory Warranty Deed
     By using this deed, the seller promises the buyer
     1. The seller is the owner of the property and has the right to sell it
     2. No one else is possessing the property
     3. There are no encumbrances against the property
-    4. No one with a better claim to the property will interfere with the transferee’s rights
+    4. No one with a better claim to the property will interfere with the transferee's rights
     5. The seller will defend certain claims regarding title to the property
     '''
+
     sale_instrument_keep_values = [3]
     df = filter_df(sale_instrument_keep_values, 'sale_instrument', df)
 
@@ -174,40 +163,11 @@ if __name__ == '__main__':
 
 
     # Setting up features for model:
-
-    # Features:
-    sales_feature = [
-        'property_type',
-        'sale_reason',
-        'property_class',
-        'sale_year',
-        'sale_month'
-    ]
-
-    property_features = [
-        'nbr_living_units',
-        'stories',
-        'bldg_grade',
-        'bldg_grade_var',
-        'sq_ft_1st_floor',
-        'sq_ft_half_floor',
-        'sq_ft_2nd_floor',
-        'sq_ft_upper_floor',
-        'sq_ft_unfin_full',
-        'sq_ft_unfin_half',
-        'sq_ft_tot_living',
-        'sq_ft_tot_basement',
-        'sq_ft_fin_basement',
-        'fin_basement_grade',
-        'sq_ft_garage_basement',
-        'sq_ft_garage_attached'
-    ]
-
-    combined_features = sales_feature + property_features
-
     features_as_is = [
         'sale_year',
-        'sale_month'
+        'sale_month',
+        'yr_built',
+        'yr_renovated'
     ]
 
     features_to_scale = [
@@ -221,10 +181,18 @@ if __name__ == '__main__':
         'sq_ft_tot_basement',
         'sq_ft_fin_basement',
         'sq_ft_garage_basement',
-        'sq_ft_garage_attached'
+        'sq_ft_garage_attached',
+        'sq_ft_open_porch',
+        'sq_ft_enclosed_porch',
+        'sq_ft_deck',
+        'brick_stone',
+        'pcnt_complete',
+        'pcnt_net_condition',
+        'addnl_cost'
     ]
 
     dummy_features = [
+        'bedrooms',
         'property_type',
         'sale_reason',
         'property_class',
@@ -232,6 +200,18 @@ if __name__ == '__main__':
         'stories',
         'bldg_grade',
         'bldg_grade_var',
+        'daylight_basement',
+        'heat_system',
+        'heat_source',
+        'bath_half_count',
+        'bath_3qtr_count',
+        'bath_full_count',
+        'view_utilization',
+        'fp_single_story',
+        'fp_multi_story',
+        'fp_freestanding',
+        'fp_additional',
+        'condition'
     ]
 
 
@@ -242,7 +222,7 @@ if __name__ == '__main__':
     scalar = StandardScaler().fit(df[features_to_scale])
     df[features_to_scale] = scalar.transform(df[features_to_scale])
 
-    final_df = df[features_as_is + features_to_scale + ['sale_price']]
+    final_df = df[features_as_is + features_to_scale + ['sale_price'] + ['address']]
 
     print("Creating dummy columns:")
     for col in dummy_features:
@@ -257,7 +237,8 @@ if __name__ == '__main__':
     print("Collecting target values")
     # Target value: SalePrice
     y = final_df.pop('sale_price')
-    X = final_df
+    X = final_df.copy()
+    del X['address']
 
 
     print("Initializing model")

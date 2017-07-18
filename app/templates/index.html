@@ -11,6 +11,9 @@
 
     <title>Real Estate Price Predictor</title>
 
+    <!-- OLD SCRIPT -->
+    <script type="text/javascript" src={{ url_for('static', filename='jquery-3.2.1.min.js')}}> </script>
+
     <!-- Bootstrap Core CSS -->
     <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
 
@@ -22,6 +25,55 @@
 
     <!-- Custom Fonts -->
     <link href="{{ url_for('static', filename='font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Morris Charts JavaScript -->
+    <script src="js/plugins/morris/raphael.min.js"></script>
+    <script src="js/plugins/morris/morris.min.js"></script>
+    <script src="js/plugins/morris/morris-data.js"></script>
+
+
+    <!-- OLD SCRIPT -->
+    <script type='text/javascript'>
+
+    let get_document = function() {
+      console.log("Button clicked")
+      let user_doc = $("input#input_doc").val()
+      return {'user_doc' : user_doc}
+    }
+
+    let send_output_json = function(doc) {
+      console.log(doc)
+      $.ajax({
+        url: "/submit",
+        contentType: "application/json; charset=utf-8",
+        type: "POST",
+        success: function(data) {
+          display_solution(data)
+        },
+        data: JSON.stringify(doc)
+      })
+    }
+
+    let display_solution = function(solution) {
+      console.log(solution)
+      $("span#solution").html(solution['doc'])
+    }
+
+    $(document).ready(function() {
+      $("button#compute").click(function() {
+        console.log("Clicked")
+        let solution = get_document()
+        send_output_json(solution)
+      })
+    })
+
+    </script>
+    <!-- /OLD SCRIPT -->
+
+
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -194,15 +246,23 @@
 
         <div id="page-wrapper">
 
+          <!-- <textarea id="input_doc" rows="5" cols="50"></textarea> -->
+          <!-- <button type="button", id="compute">Compute</button> -->
+          <!-- <p>Your document context is: <span id="solution"></span> </p> -->
+
+
           <!-- Address lookup form -->
           <h1>Address Lookup</h1>
 
             <form role="form">
 
                 <div class="form-group input-group">
-                    <input type="text" class="form-control">
-                    <span class="input-group-btn"><button class="btn btn-default" type="button"><i class="fa fa-search"></i></button></span>
+                    <input type="text" class="form-control", id="input_doc">
+                    <span class="input-group-btn"><button class="btn btn-default" type="button", id="compute"><i class="fa fa-search"></i></button></span>
+
+
                 </div>
+                <p>Your document context is: <span id="solution"></span> </p>
 
             </form>
 
@@ -485,16 +545,6 @@
     </div>
     <!-- /#wrapper -->
 
-    <!-- jQuery -->
-    <script src="js/jquery.js"></script>
-
-    <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.min.js"></script>
-
-    <!-- Morris Charts JavaScript -->
-    <script src="js/plugins/morris/raphael.min.js"></script>
-    <script src="js/plugins/morris/morris.min.js"></script>
-    <script src="js/plugins/morris/morris-data.js"></script>
 
 </body>
 

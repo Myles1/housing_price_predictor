@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+
+    <title>Document Context Predictor</title>
+    <meta name="description" content="Document Context Predictor">
+    <meta name="author" content="Myles Hollowed">
+
+      <!-- <script type="text/javascript" src={{ url_for('static', filename='jquery-3.2.1.min.js')}}> </script> -->
+
+</head>
+
+<body>
+
+    <h1>Document Context Predictor<h1>
+    <h2>By: Myles Hollowed</h2>
+    <p>This app will predict the context of any document</p>
+    <p>Please enter your document below!</p>
+
+    <div>
+      <textarea id="input_doc" rows="5" cols="50"></textarea>
+    </div>
+
+    <div>
+      <button type="button", id="compute">Compute</button>
+    </div>
+
+    <div>
+      <p>Your document context is: <span id="solution"></span> </p>
+    </div>
+
+
+
+
+<script type='text/javascript'>
+
+let get_document = function() {
+  let user_doc = $("textarea#input_doc").val()
+  return {'user_doc' : user_doc}
+}
+
+let send_output_json = function(doc) {
+  $.ajax({
+    url: "/submit",
+    contentType: "application/json; charset=utf-8",
+    type: "POST",
+    success: function(data) {
+      display_solution(data)
+    },
+    data: JSON.stringify(doc)
+  })
+}
+
+let display_solution = function(solution) {
+  console.log(solution)
+  $("span#solution").html(solution['doc'])
+}
+
+$(document).ready(function() {
+  $("button#compute").click(function() {
+    let solution = get_document()
+    send_output_json(solution)
+  })
+})
+
+</script>
+
+</body>
+</html>

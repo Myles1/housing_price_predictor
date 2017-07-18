@@ -40,8 +40,9 @@ def filter_df(keep_values, col_name, df):
 
 class RealEstatePredictor(object):
 
-    def __init__(self):
-        self.model = XGBRegressor(learning_rate=0.1, n_estimators=500, max_depth=15)
+    def __init__(self, df):
+        self.df = df
+        self.model_XG = XGBRegressor(learning_rate=0.1, n_estimators=500, max_depth=15)
 
     def fit(self, X, y):
         self.model.fit(X, y)
@@ -52,7 +53,11 @@ class RealEstatePredictor(object):
         return median_absolute_error(y_hat, y_test)
 
     def predict(self, X):
-        return self.model.predict(X)
+        X_to_predict = self.df[self.df['address'].str.contains(X, na=False)]
+        del X_to_predict['address']
+        X_to_predict['sale_year'] = 2017
+        X_to_predict['sale_month'] = 7
+        return self.model.predict(X_to_predict)
 
 
 if __name__ == '__main__':
@@ -89,6 +94,8 @@ if __name__ == '__main__':
         FROM sales_info s
         LEFT JOIN property_info p
         ON s.major = p.major AND s.minor = p.minor
+        LEFT JOIN unit_breakdown u
+        ON s.major = u.major and s.minor = u.minor
         ;
     '''
 
@@ -189,7 +196,9 @@ if __name__ == '__main__':
         'brick_stone',
         'pcnt_complete',
         'pcnt_net_condition',
-        'addnl_cost'
+        'addnl_cost',
+        'nbr_this_type',
+        'sq_ft'
     ]
 
     dummy_features = [
@@ -212,7 +221,10 @@ if __name__ == '__main__':
         'fp_multi_story',
         'fp_freestanding',
         'fp_additional',
-        'condition'
+        'condition',
+        'unit_type_item_id',
+        'nbr_bedrooms',
+        'nbr_baths'
     ]
 
 
@@ -243,7 +255,7 @@ if __name__ == '__main__':
 
 
     print("Initializing model")
-    model = RealEstatePredictor()
+    model = RealEstatePredictor(df=final_df)
 
     print("Fitting model")
     model.fit(X, y)

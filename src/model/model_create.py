@@ -75,8 +75,9 @@ if __name__ == '__main__':
     db_info = {
         'user':'app_connect',
         'host':'localhost',
-        'database':'real_estate_data',
-        'port':5432
+        'database':'final_real_estate_data',
+        'port':5432,
+        'password':'flying_horse536'
     }
 
     print("Connecting to Database...")

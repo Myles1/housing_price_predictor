@@ -41,7 +41,7 @@ def filter_df(keep_values, col_name, df):
 class RealEstatePredictor(object):
 
     def __init__(self):
-        self.model_XG = XGBRegressor(learning_rate=0.1, n_estimators=500, max_depth=15)
+        self.model = XGBRegressor(learning_rate=0.1, n_estimators=500, max_depth=15)
 
     def fit(self, X, y):
         self.model.fit(X, y)
@@ -52,7 +52,7 @@ class RealEstatePredictor(object):
         return median_absolute_error(y_hat, y_test)
 
     def predict(self, X):
-        return self.model_XG.predict(X)
+        return self.model.predict(X)
 
 
 if __name__ == '__main__':
@@ -70,8 +70,9 @@ if __name__ == '__main__':
     db_info = {
         'user':'app_connect',
         'host':'localhost',
-        'database':'real_estate_data',
-        'port':5432
+        'database':'final_real_estate_data',
+        'port':5432,
+        'password':'flying_horse536'
     }
 
     print("Connecting to Database...")

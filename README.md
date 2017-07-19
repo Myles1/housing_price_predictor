@@ -1,5 +1,4 @@
 # Housing Price Predictor
-Work in progress - Finished on July 20, 2017
 
 # What it does
 The Housing Price Predictor makes use of publically avaible real estate data in the Seattle area to train an XGBoost model. This allows for predictions of present and past values of real estate within a 10% absolute median error.
@@ -8,12 +7,7 @@ The Housing Price Predictor makes use of publically avaible real estate data in 
 
 1. Tracking price fluctuations over time.
 
-2. A seller would like to make changes to their property before putting it on the market
-
-They input address their address, and receive value predictions
-
-The seller then changes the input values and receives updated predictions
-
+2. A seller would like to make changes to their property before putting it on the market. They input their address, and receive value predictions. The seller then changes the input variables and receives updated predictions. This allows them to make changes to their property, knowing beforehand what kind of change in value they can expect.
 
 
 

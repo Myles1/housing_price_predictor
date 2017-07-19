@@ -6,12 +6,12 @@ The Housing Price Predictor makes use of publically avaible real estate data in 
 
 # Use Cases
 
-1.
-A home owner would like to track price fluctuations over time.
+1. Tracking price fluctuations over time.
 
-2.
-A seller would like to make changes to their property before putting it on the market
+2. A seller would like to make changes to their property before putting it on the market
+
 They input address their address, and receive value predictions
+
 The seller then changes the input values and receives updated predictions
 
 

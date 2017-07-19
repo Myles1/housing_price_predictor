@@ -6,27 +6,35 @@ import numpy as np
 
 # DataFrames
 import pandas as pd
+pd.set_option('display.max_columns', 500)
+
+# Plotting
+import matplotlib.pyplot as plt
+%matplotlib inline
+plt.style.use('ggplot')
 
 # Models
 from xgboost import XGBRegressor
-# from sklearn.linear_model import LinearRegression
-from sklearn.ensemble import RandomForestRegressor#, GradientBoostingRegressor
+from sklearn.linear_model import LinearRegression, Lasso, Ridge
+from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor
+from sklearn.svm import SVR
+import xgboost
 
 # Cross validation
-from sklearn.cross_validation import train_test_split#, cross_val_score
-# from sklearn.ensemble.partial_dependence import plot_partial_dependence
-# from sklearn.model_selection import KFold, ShuffleSplit
-# from sklearn.metrics import mean_squared_error, mean_absolute_error, median_absolute_error, make_scorer
-# make_scorer = make_scorer(median_absolute_error)
+from sklearn.cross_validation import train_test_split, cross_val_score
+from sklearn.ensemble.partial_dependence import plot_partial_dependence
+from sklearn.model_selection import KFold, ShuffleSplit
+from sklearn.metrics import mean_squared_error, mean_absolute_error, median_absolute_error, make_scorer
+scorer_ = make_scorer(median_absolute_error)
 
 # Preprocessing
 from sklearn.preprocessing import StandardScaler
 from sklearn.utils import shuffle
 
-# Persisting Model
-import pickle
+# Print Function
+from pprint import pprint
 
-# DateTime
+# Datetime
 import datetime
 
 def execute_query(q):
@@ -167,6 +175,11 @@ if __name__ == '__main__':
     sale_instrument_keep_values = [3]
     df = filter_df(sale_instrument_keep_values, 'sale_instrument', df)
 
+    '''
+    Keep properties with sale values > $0
+    '''
+    df = df[df['sale_price'] > 0]
+
 
     print("Converting 'document_date' to DateTime Format")
     # Change 'DocumentDate' to DateTime
@@ -193,8 +206,6 @@ if __name__ == '__main__':
 
     print("Filling NaNs")
     df.fillna(0, inplace=True)
-
-
 
 
     # Setting up features for model:
@@ -228,6 +239,7 @@ if __name__ == '__main__':
         'sq_ft'
     ]
 
+
     dummy_features = [
         'bedrooms',
         'property_type',
@@ -255,30 +267,26 @@ if __name__ == '__main__':
     ]
 
 
-    print("Scaling columns:")
-    for col in features_to_scale:
-        print(col)
     # Standardize the dataframe
     scalar = StandardScaler().fit(df[features_to_scale])
-    df[features_to_scale] = scalar.transform(df[features_to_scale])
+    # df[features_to_scale] = scalar.transform(df[features_to_scale])
+    scalar.transform(df[features_to_scale])
 
     final_df = df[features_as_is + features_to_scale + ['sale_price'] + ['address']]
 
-    print("Creating dummy columns:")
-    for col in dummy_features:
-        print(col)
     # Get dummy cols
     dummies = pd.get_dummies(df[dummy_features].applymap(str))
     final_df = pd.concat([final_df, dummies], axis=1)
 
-    print("Finalizing DataFrame")
     final_df = shuffle(final_df)
 
-    print("Collecting target values")
     # Target value: SalePrice
-    y = final_df.pop('sale_price')
-    X = final_df.copy()
+    y = final_df['sale_price']
+
+    X = final_df.drop('sale_price', axis=1).copy()
     del X['address']
+
+
 
 
     print("Initializing model")

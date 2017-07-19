@@ -66,29 +66,27 @@ class RealEstatePredictor(object):
         X_to_predict['sale_month'] = month
         return self.model.predict(X_to_predict)
 
-    def _lookup_address_info(self, address):
-        address_info = self.df[self.df['address'].str.contains(X, na=False)].iloc[0]
-        del address_info['address']
-        return address_info
-
-    def predict_all(self, address, max_year=None, max_month=None):
+    def predict_all(self, X, max_year=None, max_month=None):
         if max_year == None or max_month == None:
             now = datetime.datetime.now()
             max_year = now.year
             max_month = now.month
 
-        X_to_predict = self._lookup_address_info(address)
+        X_to_predict = self.df[self.df['address'].str.contains(X, na=False)]
+        del X_to_predict['address']
 
         preds = []
         for yr in range(1994, max_year+1):
             for mo in range(1, 13):
                 X_to_predict['sale_year'] = X_to_predict['sale_year'].apply(lambda x: yr)
                 X_to_predict['sale_month'] = X_to_predict['sale_month'].apply(lambda x: mo)
-                preds.append(self.model.predict(X_to_predict))
+                preds.append(self.model.predict(X_to_predict))                
 
                 if yr == max_year and mo > max_month:
                     return preds
 
+        print("Didn't enter yr mo loop")
+        return None
 
 
 if __name__ == '__main__':
@@ -137,6 +135,9 @@ if __name__ == '__main__':
     print("Creating DataFrame")
     df = pd.DataFrame(query_result, columns=column_names)
 
+
+
+
     print("Filtering values")
     '''
     PrincipalUse value of 6 represents Residential buildings
@@ -153,6 +154,7 @@ if __name__ == '__main__':
     '''
     property_type_keep_values = [1, 2, 3]
     df = filter_df(property_type_keep_values, 'property_type', df)
+
 
     '''
     SaleInstrument value of 3 representa a Statutory Warranty Deed

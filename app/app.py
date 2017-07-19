@@ -50,6 +50,9 @@ def simple():
     from io import BytesIO
     import random
 
+    import matplotlib.pyplot as plt
+    plt.style.use('ggplot')
+
     from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
     from matplotlib.figure import Figure
     from matplotlib.dates import DateFormatter
@@ -66,13 +69,13 @@ def simple():
     #     y.append(random.randint(0, 1000))
 
 
-    y = model.predict_all('352  N 137')
+    y = model.predict_all('351  N 137')
     print(y)
     x = list(range(1, len(y)+1))
     ax.plot(x, y)
 
 
-    ax.set_ylim(ymin=0)
+    #ax.set_ylim(ymin=0)
 
     #ax.plot_date(x, y, '-')
     #ax.xaxis.set_major_formatter(DateFormatter('%Y-%m-%d'))

@@ -3,17 +3,17 @@
 <head>
   <meta charset="utf-8">
 
-  <title>Quadratic Equation Solver</title>
+  <title>Housing Price Predictor</title>
   <meta name="description" content="Quadratic Equation Solver">
   <meta name="author" content="Galvanize DSI">
 
     <script type="text/javascript"
-            src="{{ url_for('static', filename='jquery.js') }}">  
+            src="{{ url_for('static', filename='jquery.js') }}">
     </script>
-    <script type="text/javascript" 
-            src="{{ url_for('static', filename='app.js') }}">  
+    <script type="text/javascript"
+            src="{{ url_for('static', filename='app.js') }}">
     </script>
-    <link rel="stylesheet" type="text/css" 
+    <link rel="stylesheet" type="text/css"
           href="{{ url_for('static', filename='css/bootstrap.css') }}">
 
 </head>
@@ -27,7 +27,7 @@
 
 
         <div class="form-group">
-          <p class="form-control-static">c:</p>
+          <p class="form-control-static">Address: </p>
         </div>
         <div class="form-group">
           <input class="form-control" id="address"></input>
@@ -36,11 +36,18 @@
         <div class="form-group">
           <button type="button" id="predict" class="btn-primary">Compute Values</button>
         </div>
-        
+
+
+        <span id="predictions">
+          <p> <img src=test.png> </img> </p>
+        </span>
+
+
+
       </div>
     </div>
 
-
+    <!--
 
     <div class="row">
         <p>This app will solve quadratic equations for you!</p>
@@ -74,15 +81,15 @@
         <div class="form-group">
           <button type="button" id="solve" class="btn-primary">Solve!</button>
         </div>
-        
+
       </div>
     </div>
 
     <div class="row">
-        <!-- The span has an id so that later we can fill in the solution
+        <! The span has an id so that later we can fill in the solution
              using js. -->
-        <p> The solution is: <span id="solution"></span> </p>
-    </div>
+        <!-- <p> The solution is: <span id="solution"></span> </p>
+    </div> -->
 
 </div>
 </body>

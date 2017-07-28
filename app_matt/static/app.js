@@ -4,7 +4,7 @@ let get_input_coefficients = function() {
     let c = $("input#c").val()
     return {'a': parseInt(a),
             'b': parseInt(b),
-            'c': parseInt(c)} 
+            'c': parseInt(c)}
 };
 
 
@@ -50,7 +50,7 @@ let display_solutions = function(solutions) {
 
 $(document).ready(function() {
 
-    $("button#address").click(function() {
+    $("button#predict").click(function() {
         let address = get_address();
         send_address(address);
     })

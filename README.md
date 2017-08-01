@@ -14,10 +14,23 @@ The Housing Price Predictor makes use of publically avaible real estate data in 
 
 # Technologies
 1. Python
-3. Amazon AWS
-  a. S3
-  b. Ec2
+3. Amazon AWS (S3 & EC2)
 4. Scikit-learn
 5. Numpy
 6. Pandas
 7. Matplotlib
+
+
+# Examples
+
+Images created with Matplotlib
+
+These first two images show the comparison between two properties with actual sales (blue points) and predicted value (red line)
+
+![](/images/sales_and_prediced_values_1.png?raw=true)
+
+![](/images/sales_and_prediced_values_2.png?raw=true)
+
+These are the expected changes in price based on a few different options for remodeling.
+
+![](/images/price_changes_1.png?raw=true)

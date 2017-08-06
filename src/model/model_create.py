@@ -102,13 +102,6 @@ class RealEstatePredictor(object):
 if __name__ == '__main__':
     '''Steps to create and persist Real Estate Predictor'''
 
-    db_info = {
-        'user':'app_connect',
-        'database':'final_real_estate_data',
-        'host' : 'localhost',
-        'port' : 5432,
-        'password' : 'flying_horse536'
-    }
 
 
     db_info = {
@@ -116,7 +109,7 @@ if __name__ == '__main__':
         'host':'localhost',
         'database':'real_estate_data',
         'port':5432,
-        'password':'flying_horse536'
+        'password':''
     }
 
     print("Connecting to Database...")

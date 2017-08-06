@@ -280,23 +280,14 @@ if __name__ == '__main__':
     del X['address']
 
 
-
-
     print("Initializing model")
     model = RealEstatePredictor(df=final_df)
 
     print("Fitting model")
     model.fit(X, y)
 
-
     print("Pickling model")
-
-
     with open('model.pkl', 'wb') as f:
         pickle.dump(model, f)
-
-    # print("Pickling DataFrame")
-    # final_df.to_pickle('df.pkl')
-
 
     print("Finished")

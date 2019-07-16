@@ -10,7 +10,7 @@ pd.set_option('display.max_columns', 500)
 
 # Plotting
 import matplotlib.pyplot as plt
-%matplotlib inline
+# %matplotlib inline
 plt.style.use('ggplot')
 
 # Models
